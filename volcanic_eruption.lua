@@ -219,14 +219,14 @@ AddPrefabPostInit("world",function()
     if not TheShard:IsSecondary() then -- 主世界来处理随机爆发
         local mod_data = RW_Data:LoadData()
         if not mod_data["volcanic_eruption_day"] then -- 首次初始化数据
-            mod_data["volcanic_eruption_day"] = TheWorld.state.cycles + 1
+            mod_data["volcanic_eruption_day"] = TheWorld.state.cycles
             RW_Data:SaveData(mod_data or {})
-        elseif mod_data["volcanic_eruption_day"] > (TheWorld.state.cycles + 1) and (mod_data["last_volcanic_eruption_day"] and mod_data["last_volcanic_eruption_day"] < TheWorld.state.cycles + 1) then -- 回档过？
+        elseif mod_data["volcanic_eruption_day"] > (TheWorld.state.cycles + 1) and (mod_data["last_volcanic_eruption_day"] and mod_data["last_volcanic_eruption_day"] <= TheWorld.state.cycles + 1) then -- 回档过？
             mod_data["volcanic_eruption_day"] = mod_data["last_volcanic_eruption_day"] -- 尝试使用备份数据
             RW_Data:SaveData(mod_data or {})
         else -- 重置数据
-            mod_data["volcanic_eruption_day"] = TheWorld.state.cycles + 1
-            mod_data["last_volcanic_eruption_day"] = mod_data["volcanic_eruption_day"]
+            mod_data["volcanic_eruption_day"] = TheWorld.state.cycles
+            mod_data["last_volcanic_eruption_day"] = nil
             RW_Data:SaveData(mod_data or {})
         end
         mod_data = nil
