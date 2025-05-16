@@ -57,10 +57,14 @@ local function WarnQuake(duration, quake_speed, quake_scale) -- 给予玩家地�
             player:DoTaskInTime(math.random() * 2, function()
                 player.components.talker:Say(GetString(player, "ANNOUNCE_QUAKE"))
             end)
-        end
 
-        -- 使用RPC让客户端播放地震音效
-        SendModRPCToClient(CLIENT_MOD_RPC["BOSS_MEI_pack"]["play_volcano_quake"], id_table, duration)
+            -- 客户端播放地震音效
+            player.SoundEmitter:PlaySound("dontstarve/cave/earthquake", "volcano_earthquake")
+            player.SoundEmitter:SetParameter("volcano_earthquake", "intensity", 0.08)
+            player:DoTaskInTime(duration or 0, function()
+                player.SoundEmitter:KillSound("volcano_earthquake")
+            end)
+        end
 
     elseif TheWorld:HasTag("island") or TheWorld:HasTag("volcano") then -- 海难/火山世界调用事件地震
         local data = {
@@ -107,7 +111,7 @@ local function try_eruption(firerain_duration, firerain_per_sec, quake_duration,
             player:DoTaskInTime(math.random() * 2, function() -- 火山爆发台词宣告
                 player.components.talker:Say(GetString(player, "ANNOUNCE_VOLCANO_ERUPT"))
             end)
-            SendModRPCToClient(CLIENT_MOD_RPC["BOSS_MEI_pack"]["play_volcano_eruption"], id_table) -- 玩家播放火山爆发时的音乐
+            player.SoundEmitter:PlaySound("ia/music/music_volcano_active") -- 火山爆发 -- 玩家播放火山爆发时的音乐
             StartFireRain(player, TUNING.VOLCANO_FIRERAIN_RADIUS, 1/firerain_per_sec, firerain_duration) -- 生成陨石
         end
 

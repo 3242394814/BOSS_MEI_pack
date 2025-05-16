@@ -69,10 +69,6 @@ function RW_Data:LoadData()
 	return data or {}
 end
 
-if GetModConfigData("volcanic_eruption") then
-	modimport("volcanic_eruption_RPC") -- 火山爆发 服务器与客户端通信的RPC
-end
-
 if TheNet:GetIsServer() then
 	AddPrefabPostInit("world",function()
 		if GetModConfigData("disable_save_command") then -- 禁用保存指令
