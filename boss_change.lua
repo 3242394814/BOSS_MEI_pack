@@ -8,15 +8,20 @@ local boss = {
     "moose", -- 麋鹿鹅
     "minotaur", -- 远古守护者
     "spiderqueen", -- 蜘蛛女王
-    "warg", -- 
+    "warg", -- 座狼
     "dragonfly", -- 龙蝇
     "antlion", -- 蚁狮
-    "beequeen", -- 蜂后
-    "klaus", -- 克劳斯
-    "stalker", -- 复活的骨甲(洞穴)
+    "beequeen", -- 蜂王
+    "klaus", -- 克劳斯 一阶段就会额外掉落，二阶段不额外掉落...正好防止多获得钥匙？（doge
+    -- "stalker", -- 复活的骨架(洞穴)
+    "shadowthrall_horns", -- 恐怖之眼
+    "twinofterror1", -- 激光眼
+    "twinofterror2", -- 魔焰眼
+    "daywalker", -- 梦魇疯猪
+    "daywalker2", -- 拾荒疯猪
 
 	"malbatross", -- 邪天翁
-    "stalker_forest", -- 复活的骨甲(森林守护者)
+    -- "stalker_forest", -- 复活的骨架(森林守护者) 想白嫖？不可能！
     "toadstool", -- 毒菌蟾蜍
     "toadstool_dark", -- 悲惨的毒菌蟾蜍
     "stalker_atrium", -- 远古织影者
@@ -24,6 +29,10 @@ local boss = {
     "alterguardian_phase1", -- 天体英雄（第一阶段）
     "alterguardian_phase2", -- 天体英雄（第二阶段）
     "alterguardian_phase3", -- 天体英雄（第三阶段）
+
+    "mutatedbearger", -- 装甲熊獾
+    "mutatedwarg", -- 附身座狼
+    "mutateddeerclops", -- 晶体独眼巨鹿
 
     -- 海难
     "tigershark", -- 虎鲨
