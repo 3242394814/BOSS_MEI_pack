@@ -12,7 +12,7 @@ local boss = {
     "dragonfly", -- 龙蝇
     "antlion", -- 蚁狮
     "beequeen", -- 蜂王
-    "klaus", -- 克劳斯 一阶段就会额外掉落，二阶段不额外掉落...正好防止多获得钥匙？（doge
+    "klaus", -- 克劳斯
     -- "stalker", -- 复活的骨架(洞穴)
     "shadowthrall_horns", -- 恐怖之眼
     "twinofterror1", -- 激光眼
@@ -59,6 +59,29 @@ local function kraken_SpawnChest(inst, x, y, z) -- 海妖专属（生成深渊�
     chest.components.scenariorunner:Run()
 end
 
+local function minotaur_SpawnChest(inst, x, y, z) -- 远古守护者专属（生成大号华丽箱子）
+    local chest = SpawnPrefab("minotaurchestspawner")
+    chest.Transform:SetPosition(x, y, z)
+    for i = 1, 8 do
+        if chest:PutBackOnGround(TILE_SCALE * i) then
+            break
+        end
+    end
+    chest.minotaur = inst
+end
+
+local function klaus_death(inst, x, y, z) -- 克劳斯专属（生成额外掉落）
+    if inst and inst:IsUnchained() then
+        -- 生成额外钥匙
+        local key = SpawnPrefab("klaussackkey")
+        key.Transform:SetPosition(x, y, z)
+
+        -- 生成额外赃物袋
+        local klaus_sack = SpawnPrefab("klaus_sack")
+        klaus_sack.Transform:SetPosition(x, y, z)
+    end
+end
+
 local function Get_players_number()
     local ClientObjs = TheNet:GetClientTable() or {}
     local players_number = #ClientObjs
@@ -103,19 +126,39 @@ local function set_boss_data(inst, data)
 
     local drop = Get_players_number()
 	inst:ListenForEvent("death", function() --死亡后触发
-        if inst.prefab == "kraken" then -- 海妖专属
+        if inst.prefab == "kraken" then -- 海妖
             local x, y, z = inst.Transform:GetWorldPosition() -- 获取海妖位置
+            local _x = x
             inst:DoTaskInTime(3, function() -- 等3秒再判断
                 if not inst.components.health:IsDead() then -- 确保是真死了
                     return
                 end
                 while drop > 1 do -- 额外掉落
                     drop = drop - 1
-                    inst.components.lootdropper:DropLoot(Vector3(inst.Transform:GetWorldPosition()))  --额外掉落N倍
-                    x = x + 1
+                    inst.components.lootdropper:DropLoot(Vector3(_x, y, z))  --额外掉落N倍
+                    x = x + 2
                     kraken_SpawnChest(inst, x, y, z) -- 生成额外深渊宝箱
                 end
             end)
+        elseif inst.prefab == "minotaur" then -- 远古守护者
+            local x, y, z = inst.Transform:GetWorldPosition() -- 获取远古守护者位置
+            local _x = x
+            while drop > 1 do -- 额外掉落
+                drop = drop - 1
+                inst.components.lootdropper:DropLoot(Vector3(_x, y, z))  --额外掉落N倍
+                x = x + 2
+                minotaur_SpawnChest(inst, x, y, z) -- 生成额外大号华丽箱子
+            end
+        elseif inst.prefab == "klaus" then -- 克劳斯
+            local x, y, z = inst.Transform:GetWorldPosition() -- 获取克劳斯位置
+            local _x = x
+            while drop > 1 do -- 额外掉落
+                drop = drop - 1
+                inst.components.lootdropper:DropLoot(Vector3(_x, y, z))  --额外掉落N倍
+                x = x + 2
+                klaus_death(inst, x, y, z) -- 额外掉落钥匙、赃物袋
+            end
+            drop = Get_players_number() -- 重置掉落倍数
         else
             while drop > 1 do -- 额外掉落
                 drop = drop - 1
