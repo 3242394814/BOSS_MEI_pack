@@ -25,7 +25,7 @@ configuration_options =
     {
 		name = "disable_save_command",
 		label = "禁用保存指令",
-		hover = "",
+		hover = "小心服务器崩溃没存上档！",
 		options =	{
 						{description = "是", data = true, hover = ""},
 						{description = "否", data = false, hover = ""},
