@@ -106,7 +106,7 @@ local function set_boss_data(inst, data)
 
     local check_player_num, fight_player_num, last_fight_player_num -- 开启检测，当前BOSS对手数，上次记录的BOSS对手数
     inst:DoPeriodicTask(1,function() -- 每1秒检测一次
-        if inst.components.health.currenthealth < 2000 then -- BOSS低于2000血时
+        if inst.components and inst.components.health and inst.components.health.currenthealth < 2000 then -- BOSS低于2000血时
             check_player_num = true
         end
 
@@ -117,7 +117,7 @@ local function set_boss_data(inst, data)
             end
 
             fight_player_num = GetPlayerEnts(inst) -- 更新当前对手数
-            if fight_player_num > last_fight_player_num then -- 检测到对手变多
+            if fight_player_num > last_fight_player_num and inst.components and inst.components.health then -- 检测到对手变多
                 inst.components.health.currenthealth = inst.components.health.currenthealth + ((fight_player_num - last_fight_player_num) * 2000) -- 每来1个玩家+2000血
                 last_fight_player_num = fight_player_num -- 更新记录的对手数
             end
