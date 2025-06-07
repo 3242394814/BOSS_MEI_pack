@@ -1,6 +1,6 @@
 --[[
-本LUA文件针对 岛屿冒险 - 海难 v1.0.13 制作
-by.冰冰羊 2025年5月16日
+本LUA文件针对 岛屿冒险 - 海难 v1.0.15 制作
+by.冰冰羊 2025年6月7日
 
 此文件逻辑可能较为复杂...
 我来简单喵两句它的逻辑
@@ -224,10 +224,6 @@ AddPrefabPostInit("world",function()
         elseif mod_data["volcanic_eruption_day"] > (TheWorld.state.cycles + 1) and (mod_data["last_volcanic_eruption_day"] and mod_data["last_volcanic_eruption_day"] <= TheWorld.state.cycles + 1) then -- 回档过？
             mod_data["volcanic_eruption_day"] = mod_data["last_volcanic_eruption_day"] -- 尝试使用备份数据
             RW_Data:SaveData(mod_data or {})
-        else -- 重置数据
-            mod_data["volcanic_eruption_day"] = TheWorld.state.cycles
-            mod_data["last_volcanic_eruption_day"] = nil
-            RW_Data:SaveData(mod_data or {})
         end
         mod_data = nil
 
@@ -263,3 +259,10 @@ AddPrefabPostInit("world",function()
         end)
     end
 end)
+
+GLOBAL.c_reset_random_volcanic_eruption = function() -- 手动重置火山爆发概率
+    local mod_data = RW_Data:LoadData()
+    mod_data["volcanic_eruption_day"] = 0
+    mod_data["last_volcanic_eruption_day"] = nil
+    RW_Data:SaveData(mod_data or {})
+end
