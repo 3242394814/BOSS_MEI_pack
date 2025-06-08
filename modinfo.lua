@@ -63,6 +63,16 @@ configuration_options =
 		default = false,
 	},
 	{
+		name = "test_boss_change",
+		label = "测试BOSS血量/掉落物随人数翻倍功能",
+		hover = "",
+		options =	{
+						{description = "是", data = true, hover = ""},
+						{description = "否", data = false, hover = ""},
+					},
+		default = false,
+	},
+	{
 		name = "volcanic_eruption",
 		label = "火山爆发",
 		hover = "每天都有（当前世界天数）的概率火山爆发\n爆发过后概率重新计算",
